@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const { sql } = require("./pg");
 
 const saltRounds = 10;
 
@@ -40,10 +41,23 @@ async function register(username, plainPassword) {
 
   const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
 
+  const result = await sql`
+    INSERT INTO USERS (username, hashedPassword)
+    VALUES (${username}, ${hashedPassword});
+  `;
+  console.log(result.rowCount, result.rows);
+
   usersDb.set(username, hashedPassword);
 }
 
 async function login(username, plainPassword) {
+  const u = await sql`
+    select * from USERS
+    where username = ${username}
+  `;
+
+  console.log({ row: u.rows[0] });
+
   const hashedPasswordLookup = usersDb.get(username);
   if (hashedPasswordLookup === undefined) {
     return false;
