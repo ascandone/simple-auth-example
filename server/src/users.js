@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
 const { sql } = require("./pg");
 
+// TODO Maybe this must be increased?
+// TODO also, fetch from ENV
 const saltRounds = 10;
-
-const usersDb = new Map();
 
 function usernameValidation(username) {
   const USERNAME_RE = /^[a-z][a-z0-9]*$/;
@@ -35,37 +35,35 @@ async function register(username, plainPassword) {
     return "invalid password";
   }
 
-  if (usersDb.has(username)) {
-    return "username already exists";
-  }
-
   const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
 
-  const result = await sql`
-    INSERT INTO USERS (username, hashedPassword)
-    VALUES (${username}, ${hashedPassword});
-  `;
-  console.log(result.rowCount, result.rows);
+  try {
+    await sql`
+      INSERT INTO USERS (username, "hashedPassword")
+      VALUES (${username}, ${hashedPassword});
+    `;
 
-  usersDb.set(username, hashedPassword);
+    return undefined;
+  } catch {
+    // Actually, it could be other errors as well
+    return "user already exists";
+  }
 }
 
 async function login(username, plainPassword) {
-  const u = await sql`
+  const result = await sql`
     select * from USERS
     where username = ${username}
   `;
 
-  console.log({ row: u.rows[0] });
-
-  const hashedPasswordLookup = usersDb.get(username);
-  if (hashedPasswordLookup === undefined) {
+  const [user] = result.rows;
+  if (user === undefined) {
     return false;
   }
 
   const isValidPassword = await bcrypt.compare(
     plainPassword,
-    hashedPasswordLookup
+    user.hashedPassword
   );
 
   return isValidPassword;
