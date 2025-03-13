@@ -39,8 +39,8 @@ async function register(username, plainPassword) {
 
   try {
     await sql`
-      INSERT INTO USERS (username, "hashedPassword")
-      VALUES (${username}, ${hashedPassword});
+      insert into USERS (username, "hashedPassword")
+      values (${username}, ${hashedPassword});
     `;
 
     return undefined;
@@ -69,7 +69,27 @@ async function login(username, plainPassword) {
   return isValidPassword;
 }
 
+async function getCounter(username) {
+  const result = await sql`
+    select counter from USERS
+    where username = ${username}
+  `;
+
+  const [row] = result.rows;
+  return row.counter;
+}
+
+async function incrementCounter(username) {
+  await sql`
+    update users 
+    set counter = counter + 1
+    where username = ${username};
+  `;
+}
+
 module.exports = {
   register,
   login,
+  getCounter,
+  incrementCounter,
 };

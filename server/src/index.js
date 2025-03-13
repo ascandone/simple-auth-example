@@ -81,10 +81,16 @@ function privateRouteMiddleware(req, res, next) {
   }
 }
 
-app.get("/private", privateRouteMiddleware, (req, res) => {
+app.get("/counter", privateRouteMiddleware, async (req, res) => {
+  const counter = await users.getCounter(res.locals.auth.username);
   res.send({
-    username: res.locals.auth.username,
+    counter,
   });
+});
+
+app.post("/counter/increment", privateRouteMiddleware, async (req, res) => {
+  await users.incrementCounter(res.locals.auth.username);
+  res.send({ ok: true });
 });
 
 const port = 3000;

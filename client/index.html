@@ -8,7 +8,8 @@
   <body>
     <button id="register-btn">Register</button>
     <button id="login-btn">Login</button>
-    <button id="private-btn">Private</button>
+    <button id="get-counter-btn">Get counter</button>
+    <button id="incr-counter-btn">Increment counter</button>
     <br />
     <pre id="response"></pre>
 
@@ -53,8 +54,15 @@
         })
       );
 
-      addCallback("private-btn", () =>
-        fetch(`${BASE_URL}/me`, {
+      addCallback("get-counter-btn", () =>
+        fetch(`${BASE_URL}/counter`, {
+          credentials: "include",
+        })
+      );
+
+      addCallback("incr-counter-btn", () =>
+        fetch(`${BASE_URL}/counter/increment`, {
+          method: "POST",
           credentials: "include",
         })
       );
