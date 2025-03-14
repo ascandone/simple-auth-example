@@ -33,4 +33,5 @@ function sql(templateStringsArray, ...values) {
 module.exports = {
   sql,
   handleTemplateStringsArray, // exported for test purposes
+  pool,
 };
