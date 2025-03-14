@@ -20,6 +20,9 @@ docker compose up
 
 # in the "backend" folder:
 
+# install deps
+npm i
+
 # run migrations
 npm run migrate
 
