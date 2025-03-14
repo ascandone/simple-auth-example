@@ -11,6 +11,7 @@
   },
   "scripts": {
     "dev": "NODE_ENV=dev node ./src/index.js",
-    "migrate": "NODE_ENV=dev node ./scripts/migrate.mjs"
+    "migrate": "NODE_ENV=dev node ./scripts/migrate.mjs",
+    "test": "NODE_ENV=dev node --test"
   }
 }
