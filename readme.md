@@ -1,3 +1,17 @@
+## endpoints
+```
+# needs a json body of type { username: string, password: string }
+POST /register
+
+# needs a json body of type { username: string, password: string }
+GET /login
+
+# protected routes: (via the 'token' cookie)
+GET /counter
+POST /counter/increment
+```
+
+
 ## local dev: backend
 
 ```bash
