@@ -1,9 +1,8 @@
 const bcrypt = require("bcrypt");
 const { sql } = require("./pg");
+const env = require("./env");
 
-// TODO Maybe this must be increased?
-// TODO also, fetch from ENV
-const saltRounds = 10;
+const saltRounds = env.SALT_ROUNDS;
 
 function usernameValidation(username) {
   const USERNAME_RE = /^[a-z][a-z0-9]*$/;

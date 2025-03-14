@@ -1,9 +1,9 @@
 const pg = require("pg");
+const env = require("./env");
 
 const pool = new pg.Pool({
-  // TODO fetch from env
-  user: "postgres",
-  password: "postgres",
+  user: env.PG_USER,
+  password: env.PG_PASSWORD,
 });
 
 /**

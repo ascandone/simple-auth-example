@@ -1,6 +1,6 @@
 // Quick and dirty migrations
 
-import { sql } from "./pg.js";
+import { sql } from "../src/pg.js";
 
 await sql`
   CREATE TABLE IF NOT EXISTS USERS (
@@ -11,4 +11,4 @@ await sql`
   );
 `;
 
-console.log("done!");
+console.log("Done ✅");

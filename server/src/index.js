@@ -2,10 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const crypto = require("node:crypto");
-const users = require("./users");
 
-const JWT_SECRET = crypto.randomBytes(64).toString();
+const users = require("./users");
+const env = require("./env");
 
 const app = express();
 
@@ -13,15 +12,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    // TODO fetch from env
-    origin: "http://127.0.0.1:5500",
+    origin: env.FRONTEND_URL,
     credentials: true,
   })
 );
 
 // PRE: valid username
 function setTokenCookie(res, username) {
-  const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "30m" });
+  const token = jwt.sign({ username }, env.JWT_SECRET, { expiresIn: "30m" });
 
   res
     .cookie("token", token, {
@@ -71,7 +69,7 @@ app.post("/login", async (req, res) => {
 function privateRouteMiddleware(req, res, next) {
   try {
     // not sure I'm supposed to write that here
-    res.locals.auth = jwt.verify(req.cookies.token, JWT_SECRET);
+    res.locals.auth = jwt.verify(req.cookies.token, env.JWT_SECRET);
     next();
   } catch (error) {
     res.status(403).json({
