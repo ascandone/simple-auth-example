@@ -19,7 +19,7 @@ npm run dev
 ## local dev: frontend
 
 ```bash
-# in the "fronend" folder
+# in the "frontend" folder
 
 # install deps
 npm i
