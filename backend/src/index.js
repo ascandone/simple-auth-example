@@ -25,8 +25,8 @@ function setTokenCookie(res, username) {
     .cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "none",
-      maxAge: 3600000,
+      sameSite: "Strict",
+      maxAge: 30 * 60_1000, //30m
     })
     .json({
       ok: true,

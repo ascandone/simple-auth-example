@@ -10,7 +10,7 @@
     "pg": "^8.14.0"
   },
   "scripts": {
-    "dev": "NODE_ENV=dev node ./src/index.js",
+    "dev": "NODE_ENV=dev node --watch ./src/index.js",
     "migrate": "NODE_ENV=dev node ./scripts/migrate.mjs",
     "test": "NODE_ENV=dev node --test"
   }
